@@ -14,34 +14,34 @@ Orientation = Literal["1: 0°", "2: 0° mirrored", "3: 180°", "4: 180° mirrore
 class BaseModelCamera(BaseModel):
     orientation: Orientation = Field(
         default="1: 0°",
-        description="Choose the orientation of the camera. 0° is default orientation and applies no adjustment. The orientation will be set in the EXIF data so transformations are applied lossless.",
+        description="Chọn hướng camera. 0° là mặc định và không xoay. Hướng sẽ được thiết lập trong dữ liệu EXIF nên việc xoay ảnh là không mất dữ liệu (lossless).",
     )
 
 
 class GroupCameraVirtual(BaseModelCamera):
-    model_config = ConfigDict(title="VirtualCamera")
+    model_config = ConfigDict(title="Camera ảo")
     backend_type: Literal["VirtualCamera"] = "VirtualCamera"
 
     framerate: int = Field(
         default=15,
         ge=5,
         le=30,
-        description="Reduce the framerate to save cpu/gpu on device displaying the live preview",
+        description="Giảm tốc độ khung hình (fps) để tiết kiệm CPU/GPU trên thiết bị hiển thị.",
     )
     emulate_hires_static_still: bool = Field(
         default=False,
-        description="Deliver high-resolution still image instead the demovideo. Useful to test the processing times by emulating hires cameras.",
+        description="Trả về ảnh tĩnh độ phân giải cao thay vì video demo. Hữu ích để test thời gian xử lý giả lập camera xịn.",
     )
     emulate_multicam_capture_devices: int = Field(
         default=4,
         ge=2,
         le=20,
-        description="Number of emulated cameras when asking for synchronized capture for wigglegrams.",
+        description="Số lượng camera giả lập khi yêu cầu chụp đồng bộ cho ảnh động đa góc (wigglegrams).",
     )
 
 
 class GroupCameraPicamera2(BaseModelCamera):
-    model_config = ConfigDict(title="Picamera2")
+    model_config = ConfigDict(title="Picamera2 (RPi)")
     backend_type: Literal["Picamera2"] = "Picamera2"
 
     camera_num: int = Field(
@@ -100,7 +100,7 @@ class GroupCameraPicamera2(BaseModelCamera):
     )
     optimized_lowlight_short_exposure: bool = Field(
         default=False,
-        description="Raise AnalogueGain(=ISO) preferred before longer shutter times to avoid unsharp capture of moving people.",
+        description="Ưu tiên tăng AnalogueGain(=ISO) trước khi tăng thời gian phơi sáng để tránh ảnh bị nhòe khi đối tượng di chuyển.",
     )
     videostream_quality: Literal["VERY_LOW", "LOW", "MEDIUM", "HIGH", "VERY_HIGH"] = Field(
         default="MEDIUM",
@@ -116,7 +116,7 @@ class GroupCameraPicamera2(BaseModelCamera):
 
 
 class GroupCameraGphoto2(BaseModelCamera):
-    model_config = ConfigDict(title="Gphoto2")
+    model_config = ConfigDict(title="Gphoto2 (DSLR)")
     backend_type: Literal["Gphoto2"] = "Gphoto2"
 
     gcapture_target: str = Field(
@@ -130,19 +130,19 @@ class GroupCameraGphoto2(BaseModelCamera):
 
     iso_liveview: str = Field(
         default="",
-        description="Sets the ISO for when the photobooth is in live preview modus. Very useful, when Camera does not support Exposure Simulation, and an external Flash is used. Only works when the camera is in manual. (Example Values: Auto, 100, 200, ...)",
+        description="Thiết lập ISO khi photobooth ở chế độ xem trước (live preview). Rất hữu ích khi Camera không hỗ trợ Exposure Simulation và sử dụng Flash rời. Chỉ hoạt động ở chế độ Manual. (Ví dụ: Auto, 100, 200...)",
     )
     iso_capture: str = Field(
         default="",
-        description="Sets the ISO for when the photobooth captures a photo. Very useful, when Camera does not support Exposure Simulation, and an external Flash is used. Only works when the camera is in manual. (Example Values: Auto, 100, 200, ...)",
+        description="Thiết lập ISO khi photobooth chụp ảnh. Rất hữu ích khi Camera không hỗ trợ Exposure Simulation và sử dụng Flash rời. Chỉ hoạt động ở chế độ Manual. (Ví dụ: Auto, 100, 200...)",
     )
     shutter_speed_liveview: str = Field(
         default="",
-        description="Sets the shutter speed for the camera during the photobooth's live preview mode. Very useful, when Camera does not support Exposure Simulation, and an external Flash is used. This setting is effective only when the camera is in manual mode. (Example Values: 1, 1/5, 1/20, 1/30, 1/60, 1/1000, 1/4000, ...) Choose a very high default shutter speed in combination with Auto iso to emulate auto exposure. ",
+        description="Thiết lập tốc độ màn trập khi ở chế độ xem trước. Rất hữu ích khi Camera không hỗ trợ Exposure Simulation và sử dụng Flash rời. Chỉ hoạt động ở chế độ Manual. (Ví dụ: 1, 1/60, 1/1000...) Chọn tốc độ cao kết hợp Auto ISO để giả lập đo sáng tự động.",
     )
     shutter_speed_capture: str = Field(
         default="",
-        description="Configures the shutter speed for the camera at the time of capturing a photo in the photobooth. Very useful, when Camera does not support Exposure Simulation, and an external Flash is used. Operational only in manual mode. (Example Values: 1/60, 1/320, 1/1000, 1/2000, 1/4000, ...)",
+        description="Thiết lập tốc độ màn trập khi chụp ảnh. Rất hữu ích khi Camera không hỗ trợ Exposure Simulation và sử dụng Flash rời. Chỉ hoạt động ở chế độ Manual. (Ví dụ: 1/60, 1/125, 1/200...)",
     )
 
     canon_eosmoviemode: bool = Field(
@@ -152,21 +152,21 @@ class GroupCameraGphoto2(BaseModelCamera):
 
     pause_camera_on_livestream_inactive: bool = Field(
         default=False,
-        description="When enabled, the app tries to disable the cameras livestream when no livestream is requested. It helps to avoid sensor overheating for older cameras by setting viewfinder=0.",
+        description="Nếu bật, ứng dụng sẽ cố gắng tắt livestream từ camera khi không cần thiết. Giúp tránh quá nhiệt cảm biến cho các máy ảnh cũ.",
     )
     timeout_until_inactive: int = Field(
         default=30,
-        description="Delay after which the livestream is considered as inactive and camera should idle.",
+        description="Thời gian chờ (giây) sau đó livestream được coi là không hoạt động và camera nên nghỉ.",
     )
 
 
 class GroupCameraPyav(BaseModelCamera):
-    model_config = ConfigDict(title="PyAV")
+    model_config = ConfigDict(title="PyAV (Webcam/IP)")
     backend_type: Literal["WebcamPyav"] = "WebcamPyav"
 
     device_identifier: str = Field(
         default="Insta360 Link 2C",
-        description="Device name (Windows) or index (Linux, Mac) of the webcam.",
+        description="Tên thiết bị (Windows) hoặc chỉ số index (Linux, Mac) của webcam.",
         json_schema_extra={"list_api": "/api/admin/enumerate/usbcameras"},
     )
 
@@ -185,7 +185,7 @@ class GroupCameraPyav(BaseModelCamera):
 
     preview_resolution_reduce_factor: Literal[1, 2, 4, 8] = Field(
         default=2,
-        description="Reduce the video and permanent livestream by this factor. Raise the factor to save CPU.",
+        description="Giảm độ phân giải video xem trước và livestream theo hệ số này. Tăng hệ số để tiết kiệm CPU.",
     )
     frame_skip_count: int = Field(
         default=3,
@@ -196,7 +196,7 @@ class GroupCameraPyav(BaseModelCamera):
 
 
 class GroupCameraV4l2(BaseModelCamera):
-    model_config = ConfigDict(title="V4l2")
+    model_config = ConfigDict(title="V4l2 (Webcam Linux)")
     backend_type: Literal["WebcamV4l"] = "WebcamV4l"
 
     device_identifier: str = Field(
@@ -239,7 +239,7 @@ class GroupCameraV4l2(BaseModelCamera):
 
 
 class GroupCameraDigicamcontrol(BaseModelCamera):
-    model_config = ConfigDict(title="Digicamcontrol")
+    model_config = ConfigDict(title="Digicamcontrol (Windows)")
 
     backend_type: Literal["Digicamcontrol"] = "Digicamcontrol"
 
@@ -250,7 +250,7 @@ class GroupCameraDigicamcontrol(BaseModelCamera):
 
 
 class WigglecamNodes(BaseModel):
-    model_config = ConfigDict(title="Each camera is hooked to a node.")
+    model_config = ConfigDict(title="Mỗi camera được gắn vào một node.")
 
     # enable: bool = Field(
     #     default=True,
@@ -271,7 +271,7 @@ class WigglecamNodes(BaseModel):
 
 
 class GroupCameraWigglecam(BaseModelCamera):
-    model_config = ConfigDict(title="Wigglecam")
+    model_config = ConfigDict(title="Wigglecam (Đa góc)")
 
     backend_type: Literal["Wigglecam"] = "Wigglecam"
 
@@ -316,7 +316,7 @@ class GroupBackend(BaseModel):
     or main backend.
     """
 
-    model_config = ConfigDict(title="Camera Configuration")
+    model_config = ConfigDict(title="Cấu hình Camera (Tổng quan)")
 
     @model_validator(mode="before")
     @classmethod
@@ -331,9 +331,9 @@ class GroupBackend(BaseModel):
         return data
 
     enabled: bool = Field(
-        title="Load and start backend",
+        title="Tải và khởi động backend",
         default=True,
-        description="Selected device will be loaded and started.",
+        description="Thiết bị được chọn sẽ được tải và khởi động.",
     )
 
     description: str = Field(default="backend default name")
@@ -348,41 +348,41 @@ class GroupCameras(BaseModel):
     or main backend.
     """
 
-    model_config = ConfigDict(title="Camera Configurations")
+    model_config = ConfigDict(title="Các cấu hình Camera")
 
     enable_livestream: bool = Field(
         default=True,
-        description="Enable livestream (if possible)",
+        description="Bật livestream (nếu có thể)",
     )
     retry_capture: int = Field(
         default=3,
         ge=1,
         le=5,
-        description="Number of attempts to gather a picture from backend.",
+        description="Số lần thử chụp lại từ backend nếu thất bại.",
     )
     countdown_camera_capture_offset: float = Field(
         default=0.2,
         multiple_of=0.05,
         ge=0,
         le=20,
-        description="Trigger camera capture by offset earlier (in seconds). 0 trigger exactly when countdown is 0. Use to compensate for delay in camera processing for better UX.",
+        description="Kích hoạt chụp camera sớm hơn một chút (tính bằng giây). 0 là chụp chính xác khi đếm ngược về 0. Dùng để bù trễ xử lý camera nhằm mang lại trải nghiệm tốt hơn.",
     )
 
     index_backend_stills: int = Field(
         default=0,
-        description="Index of one backend below to capture stills.",
+        description="Chỉ số của backend bên dưới dùng để chụp ảnh tĩnh.",
     )
     index_backend_video: int = Field(
         default=0,
-        description="Index of one backend below to capture live preview and video.",
+        description="Chỉ số của backend bên dưới dùng để xem trước và quay video.",
     )
     index_backend_multicam: int = Field(
         default=0,
-        description="Index of one backend below used for multicamera images (wigglegrams).",
+        description="Chỉ số của backend bên dưới dùng cho ảnh đa góc (wigglegrams).",
     )
 
     group_backends: list[GroupBackend] = Field(
         default=[GroupBackend(description="virtual camera", backend_config=GroupCameraVirtual())],
-        description="Configure the cameras here. Typical is only one camera, but it is also possible to use a DSLR for stills and another camera for the livestream.",
-        title="List of Camera Backends",
+        description="Cấu hình camera tại đây. Thường chỉ dùng 1 camera, nhưng cũng có thể dùng 1 DSLR để chụp ảnh và 1 webcam khác để livestream.",
+        title="Danh sách Camera Backends",
     )

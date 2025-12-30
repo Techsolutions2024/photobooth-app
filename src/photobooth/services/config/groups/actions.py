@@ -12,110 +12,110 @@ from ..validators import ensure_demoassets
 class SingleImageJobControl(BaseModel):
     """Configure job control affecting the procedure."""
 
-    model_config = ConfigDict(title="Job control for single captures")
+    model_config = ConfigDict(title="Điều khiển chụp ảnh đơn")
 
     countdown_capture: float = Field(
         default=2.0,
         multiple_of=0.1,
         ge=0,
         le=20,
-        description="Countdown in seconds, when user starts a capture process.",
+        description="Thời gian đếm ngược (giây) khi người dùng bắt đầu chụp.",
     )
 
 
 class MultiImageJobControl(BaseModel):
     """Configure job control affecting the procedure."""
 
-    model_config = ConfigDict(title="Job control for multiple captures")
+    model_config = ConfigDict(title="Điều khiển chụp nhiều ảnh")
 
     countdown_capture: float = Field(
         default=2.0,
         multiple_of=0.1,
         ge=0,
         le=20,
-        description="Countdown in seconds, when user starts a capture process",
+        description="Thời gian đếm ngược (giây) khi người dùng bắt đầu chụp",
     )
     countdown_capture_second_following: float = Field(
         default=1.0,
         multiple_of=0.1,
         ge=0,
         le=20,
-        description="Countdown in seconds, used for second and following captures for collages",
+        description="Thời gian đếm ngược (giây) cho các lần chụp tiếp theo trong ảnh ghép",
     )
 
     ask_approval_each_capture: bool = Field(
         default=False,
-        description="Stop after every capture to ask user if he would like to continue or redo the capture. If disabled captures are granted as approved always.",
+        description="Dừng lại sau mỗi lần chụp để hỏi người dùng có muốn tiếp tục hay chụp lại không. Nếu tắt, ảnh luôn được coi là chấp nhận.",
     )
     approve_autoconfirm_timeout: float = Field(
         default=15.0,
-        description="If user is required to approve collage captures, after this timeout, the job continues and user confirmation is assumed.",
+        description="Nếu yêu cầu người dùng duyệt ảnh ghép, sau thời gian này (giây), quy trình sẽ tiếp tục và coi như người dùng đã xác nhận.",
     )
 
     show_individual_captures_in_gallery: bool = Field(
         default=False,
-        description="Show individual captures in the gallery. Hidden captures are still stored in the data folder. (Note: changing this setting will not change visibility of already captured images).",
+        description="Hiển thị từng ảnh chụp lẻ trong thư viện. Ảnh bị ẩn vẫn được lưu trong thư mục dữ liệu. (Lưu ý: thay đổi cài đặt này không ảnh hưởng đến khả năng hiển thị của ảnh đã chụp).",
     )
 
 
 class VideoJobControl(BaseModel):
     """Configure job control affecting the procedure."""
 
-    model_config = ConfigDict(title="Job control for video captures")
+    model_config = ConfigDict(title="Điều khiển quay video")
 
     countdown_capture: float = Field(
         default=2.0,
         multiple_of=0.1,
         ge=0,
         le=20,
-        description="Countdown in seconds, when user starts a capture process.",
+        description="Thời gian đếm ngược (giây) khi người dùng bắt đầu chụp.",
     )
 
 
 class MulticameraJobControl(BaseModel):
     """Configure job control affecting the procedure."""
 
-    model_config = ConfigDict(title="Job control for wigglegram-multicamera captures")
+    model_config = ConfigDict(title="Điều khiển chụp đa góc (3D)")
 
     countdown_capture: float = Field(
         default=2.0,
         multiple_of=0.1,
         ge=0,
         le=20,
-        description="Countdown in seconds, when user starts a capture process.",
+        description="Thời gian đếm ngược (giây) khi người dùng bắt đầu chụp.",
     )
 
     show_individual_captures_in_gallery: bool = Field(
         default=False,
-        description="Show individual captures in the gallery. Hidden captures are still stored in the data folder. (Note: changing this setting will not change visibility of already captured images).",
+        description="Hiển thị từng ảnh chụp lẻ trong thư viện. Ảnh bị ẩn vẫn được lưu trong thư mục dữ liệu. (Lưu ý: thay đổi cài đặt này không ảnh hưởng đến khả năng hiển thị của ảnh đã chụp).",
     )
 
 
 class SingleImageProcessing(BaseModel):
     """Configure stages how to process images after capture."""
 
-    model_config = ConfigDict(title="Single captures processing after capture")
+    model_config = ConfigDict(title="Xử lý ảnh đơn sau khi chụp")
 
     remove_background: bool = Field(
         default=False,
-        description="Use AI to remove the background from the captured image. Results may vary. There are different models available in the mediaprocessing section.",
+        description="Sử dụng AI để xóa phông nền khỏi ảnh đã chụp. Kết quả có thể khác nhau. Có nhiều model khác nhau trong phần xử lý media.",
     )
 
     fill_background_enable: bool = Field(
         default=False,
-        description="Apply solid color background to captured image (useful only if image is extended or background removed)",
+        description="Áp dụng màu nền đồng nhất cho ảnh đã chụp (chỉ hữu ích nếu ảnh được mở rộng hoặc xóa phông nền)",
     )
     fill_background_color: Color = Field(
         default=Color("blue"),
-        description="Solid color used to fill background.",
+        description="Màu đồng nhất dùng để tô nền.",
     )
     img_background_enable: bool = Field(
         default=False,
-        description="Add image from file to background (useful only if image is extended or background removed)",
+        description="Thêm ảnh từ file vào nền (chỉ hữu ích nếu ảnh được mở rộng hoặc xóa phông nền)",
     )
     img_background_file: Annotated[FilePath | None, BeforeValidator(ensure_demoassets)] = Field(
         default=None,
-        description="Image file to use as background filling transparent area. File needs to be located in working directory/userdata/*",
+        description="File ảnh dùng làm nền lấp đầy vùng trong suốt. File cần nằm trong thư mục làm việc/userdata/*",
         json_schema_extra={"list_api": "/api/admin/enumerate/userfiles"},
     )
 
@@ -123,50 +123,50 @@ class SingleImageProcessing(BaseModel):
 
     img_frame_enable: bool = Field(
         default=False,
-        description="Mount captured image to frame.",
+        description="Gắn ảnh đã chụp vào khung.",
     )
     img_frame_file: Annotated[FilePath | None, BeforeValidator(ensure_demoassets)] = Field(
         default=None,
-        description="Image file to which the captured image is mounted to. Frame determines the output image size! Photos are visible through transparant parts. Image needs to be transparent (PNG). File needs to be located in userdata/*",
+        description="File ảnh khung để gắn ảnh chụp vào. Khung quyết định kích thước ảnh đầu ra! Ảnh chụp hiển thị qua các phần trong suốt. Ảnh khung cần phải trong suốt (PNG). File cần nằm trong userdata/*",
         json_schema_extra={"list_api": "/api/admin/enumerate/userfiles"},
     )
     texts_enable: bool = Field(
         default=False,
-        description="General enable apply texts below.",
+        description="Bật chung tính năng chèn văn bản bên dưới.",
     )
     texts: list[TextsConfig] = Field(
         default=[],
-        description="Text to overlay on images after capture. Pos_x/Pos_y measure in pixel starting 0/0 at top-left in image. Font to use in text stages. File needs to be located in working directory/userdata/*",
+        description="Văn bản phủ lên ảnh sau khi chụp. Pos_x/Pos_y tính bằng pixel bắt đầu từ 0/0 ở góc trên bên trái ảnh. Font chữ được sử dụng trong các bước văn bản. File cần nằm trong thư mục làm việc/userdata/*",
     )
 
 
 class CollageProcessing(BaseModel):
     """Configure stages how to process collage after capture."""
 
-    model_config = ConfigDict(title="Collage processing")
+    model_config = ConfigDict(title="Xử lý ảnh ghép")
 
     ## phase 1 per capture application on collage also. settings taken from PipelineImage if needed
 
     capture_remove_background: bool = Field(
         default=False,
-        description="Use AI to remove the background from the captured image. Results may vary. There are different models available in the mediaprocessing section.",
+        description="Sử dụng AI để xóa phông nền khỏi ảnh đã chụp. Kết quả có thể khác nhau. Có nhiều model khác nhau trong phần xử lý media.",
     )
 
     capture_fill_background_enable: bool = Field(
         default=False,
-        description="Apply solid color background to captured image (useful only if image is extended or background removed)",
+        description="Áp dụng màu nền đồng nhất cho ảnh đã chụp (chỉ hữu ích nếu ảnh được mở rộng hoặc xóa phông nền)",
     )
     capture_fill_background_color: Color = Field(
         default=Color("blue"),
-        description="Solid color used to fill background.",
+        description="Màu đồng nhất dùng để tô nền.",
     )
     capture_img_background_enable: bool = Field(
         default=False,
-        description="Add image from file to background (useful only if image is extended or background removed)",
+        description="Thêm ảnh từ file vào nền (chỉ hữu ích nếu ảnh được mở rộng hoặc xóa phông nền)",
     )
     capture_img_background_file: Annotated[FilePath | None, BeforeValidator(ensure_demoassets)] = Field(
         default=None,
-        description="Image file to use as background filling transparent area. File needs to be located in working directory/userdata/*",
+        description="File ảnh dùng làm nền lấp đầy vùng trong suốt. File cần nằm trong thư mục làm việc/userdata/*",
         json_schema_extra={"list_api": "/api/admin/enumerate/userfiles"},
     )
 
@@ -174,109 +174,109 @@ class CollageProcessing(BaseModel):
 
     canvas_width: int = Field(
         default=1920,
-        description="Width (X) in pixel of collage image. The higher the better the quality but also longer time to process. All processes keep aspect ratio.",
+        description="Chiều rộng (X) tính bằng pixel của ảnh ghép. Càng cao thì chất lượng càng tốt nhưng thời gian xử lý càng lâu. Mọi quy trình đều giữ nguyên tỷ lệ khung hình.",
     )
     canvas_height: int = Field(
         default=1280,
-        description="Height (Y) in pixel of collage image. The higher the better the quality but also longer time to process. All processes keep aspect ratio.",
+        description="Chiều cao (Y) tính bằng pixel của ảnh ghép. Càng cao thì chất lượng càng tốt nhưng thời gian xử lý càng lâu. Mọi quy trình đều giữ nguyên tỷ lệ khung hình.",
     )
     merge_definition: list[CollageMergeDefinition] = Field(
-        description="How to arrange single images in the collage. Pos_x/Pos_y measure in pixel starting 0/0 at top-left in image. Width/Height in pixels. Aspect ratio is kept always. Predefined image files are used instead a camera capture. File needs to be located in working directory/userdata/*",
+        description="Cách sắp xếp các ảnh đơn trong ảnh ghép. Pos_x/Pos_y tính bằng pixel bắt đầu từ 0/0 ở góc trên bên trái ảnh. Chiều rộng/Chiều cao tính bằng pixel. Luôn giữ nguyên tỷ lệ khung hình. Ảnh định sẵn được dùng thay vì ảnh chụp từ camera. File cần nằm trong thư mục làm việc/userdata/*",
     )
     canvas_fill_background_enable: bool = Field(
         default=False,
-        description="Apply solid color background to collage",
+        description="Áp dụng màu nền đồng nhất cho ảnh ghép",
     )
     canvas_fill_background_color: Color = Field(
         default=Color("green"),
-        description="Solid color used to fill background.",
+        description="Màu đồng nhất dùng để tô nền.",
     )
     canvas_img_background_enable: bool = Field(
         default=False,
-        description="Add image from file to background.",
+        description="Thêm ảnh từ file vào nền.",
     )
     canvas_img_background_file: Annotated[FilePath | None, BeforeValidator(ensure_demoassets)] = Field(
         default=None,
-        description="Image file to use as background filling transparent area. File needs to be located in userdata/*",
+        description="File ảnh dùng làm nền lấp đầy vùng trong suốt. File cần nằm trong userdata/*",
         json_schema_extra={"list_api": "/api/admin/enumerate/userfiles"},
     )
     canvas_img_front_enable: bool = Field(
         default=False,
-        description="Overlay image on canvas image.",
+        description="Phủ ảnh lên trên ảnh ghép.",
     )
     canvas_img_front_file: Annotated[FilePath | None, BeforeValidator(ensure_demoassets)] = Field(
         default=None,
-        description="Image file to paste on top over photos and backgrounds. Photos are visible only through transparant parts. Image needs to be transparent (PNG). File needs to be located in working directory/userdata/*",
+        description="File ảnh để dán chồng lên trên ảnh chụp và hình nền. Ảnh chụp chỉ hiển thị quá các phần trong suốt. Ảnh cần phải trong suốt (PNG). File cần nằm trong thư mục làm việc/userdata/*",
         json_schema_extra={"list_api": "/api/admin/enumerate/userfiles"},
     )
     canvas_texts_enable: bool = Field(
         default=False,
-        description="General enable apply texts below.",
+        description="Bật chung tính năng chèn văn bản bên dưới.",
     )
     canvas_texts: list[TextsConfig] = Field(
         default=[],
-        description="Text to overlay on final collage. Pos_x/Pos_y measure in pixel starting 0/0 at top-left in image. Font to use in text stages. File needs to be located in working directory/userdata/*",
+        description="Văn bản phủ lên ảnh ghép cuối cùng. Pos_x/Pos_y tính bằng pixel bắt đầu từ 0/0 ở góc trên bên trái ảnh. Font chữ đợc sử dụng trong các bước văn bản. File cần nằm trong thư mục làm việc/userdata/*",
     )
 
 
 class AnimationProcessing(BaseModel):
     """Configure stages how to process collage after capture."""
 
-    model_config = ConfigDict(title="Process animated images processing after capture")
+    model_config = ConfigDict(title="Xử lý ảnh động sau khi chụp")
 
     ## phase 2 per collage settings.
 
     canvas_width: int = Field(
         default=1500,
-        description="Width (X) in pixel for the resulting animated image. The higher the better the quality but also longer time to process. All processes keep aspect ratio.",
+        description="Chiều rộng (X) tính bằng pixel cho ảnh động kết quả. Càng cao chất lượng càng tốt nhưng thời gian xử lý càng lâu. Mọi quy trình đều giữ nguyên tỷ lệ khung hình.",
     )
     canvas_height: int = Field(
         default=900,
-        description="Height (Y) in pixel for the resulting animated image. The higher the better the quality but also longer time to process. All processes keep aspect ratio.",
+        description="Chiều cao (Y) tính bằng pixel cho ảnh động kết quả. Càng cao chất lượng càng tốt nhưng thời gian xử lý càng lâu. Mọi quy trình đều giữ nguyên tỷ lệ khung hình.",
     )
     merge_definition: list[AnimationMergeDefinition] = Field(
         default=[],
-        description="Sequence captures and predefined images to line up in the resulting animated image. Predefined images are used instead a camera capture. File needs to be located in working directory/userdata/*",
+        description="Chuỗi ảnh chụp và ảnh định sẵn để xếp hàng trong ảnh động kết quả. Ảnh định sẵn được dùng thay vì ảnh chụp từ camera. File cần nằm trong thư mục làm việc/userdata/*",
     )
 
 
 class VideoProcessing(BaseModel):
     """Configure stages how to process collage after capture."""
 
-    model_config = ConfigDict(title="Video Processing")
+    model_config = ConfigDict(title="Xử lý video")
 
     video_duration: int = Field(
         default=5,
-        description="Maximum duration of the video. Users can stop earlier or capture is automatically stopped after set time.",
+        description="Thời lượng tối đa của video. Người dùng có thể dừng sớm hơn hoặc việc quay sẽ tự động dừng sau thời gian đã thiết lập.",
     )
     boomerang: bool = Field(
         default=False,
-        description="Create boomerang videos, the video is replayed reverse automatically.",
+        description="Tạo video boomerang, video sẽ được phát ngược lại sau khi phát xuôi.",
     )
     boomerang_speed: float = Field(
         default=1,
         ge=0.5,
         le=2,
-        description="Speed up the resulting boomerang. 1 is normal speed, 2 is double.",
+        description="Tăng tốc video boomerang kết quả. 1 là tốc độ bình thường, 2 là gấp đôi.",
     )
     video_framerate: int = Field(
         default=25,
         ge=1,
         le=30,
-        description="Video framerate (frames per second).",
+        description="Tốc độ khung hình video (khung hình trên giây).",
     )
 
 
 class MulticameraProcessing(BaseModel):
     """Configure stages how to process collage after capture."""
 
-    model_config = ConfigDict(title="Wigglegram-multicamera processing")
+    model_config = ConfigDict(title="Xử lý ảnh đa góc (3D)")
 
     duration: NonNegativeInt = Field(
         default=125,
         ge=100,
         le=500,
-        description="Duration of each frame in milliseconds. Wigglegrams look good usually between 100-200ms duration.",
+        description="Thời lượng của mỗi khung hình tính bằng mili giây. Wigglegrams thường trông đẹp nhất với thời lượng từ 100-200ms.",
     )
     image_filter: PluginFilters = Field(
         default=PluginFilters("original"),
@@ -290,7 +290,7 @@ t_PROCESSING = TypeVar("t_PROCESSING")
 class BaseConfigurationSet(BaseModel, Generic[t_JOBCONTROL, t_PROCESSING]):
     name: str = Field(
         default="default action",
-        description="Name to identify, only used for display in admin center.",
+        description="Tên định danh, chỉ dùng để hiển thị trong trung tâm quản trị.",
     )
 
     jobcontrol: t_JOBCONTROL
@@ -301,31 +301,31 @@ class BaseConfigurationSet(BaseModel, Generic[t_JOBCONTROL, t_PROCESSING]):
 class SingleImageConfigurationSet(BaseConfigurationSet[SingleImageJobControl, SingleImageProcessing]):
     """Configure stages how to process images after capture."""
 
-    model_config = ConfigDict(title="Postprocess single captures")
+    model_config = ConfigDict(title="Hậu kỳ ảnh đơn")
 
 
 class CollageConfigurationSet(BaseConfigurationSet[MultiImageJobControl, CollageProcessing]):
     """Configure stages how to process images after capture."""
 
-    model_config = ConfigDict(title="Postprocess collage captures")
+    model_config = ConfigDict(title="Hậu kỳ ảnh ghép")
 
 
 class AnimationConfigurationSet(BaseConfigurationSet[MultiImageJobControl, AnimationProcessing]):
     """Configure stages how to process images after capture."""
 
-    model_config = ConfigDict(title="Postprocess animation captures")
+    model_config = ConfigDict(title="Hậu kỳ ảnh động")
 
 
 class VideoConfigurationSet(BaseConfigurationSet[VideoJobControl, VideoProcessing]):
     """Configure stages how to process images after capture."""
 
-    model_config = ConfigDict(title="Postprocess video captures")
+    model_config = ConfigDict(title="Hậu kỳ video")
 
 
 class MulticameraConfigurationSet(BaseConfigurationSet[MulticameraJobControl, MulticameraProcessing]):
     """Configure stages how to process images after capture."""
 
-    model_config = ConfigDict(title="Postprocess multicamera captures")
+    model_config = ConfigDict(title="Hậu kỳ ảnh đa góc")
 
 
 class GroupActions(BaseModel):
@@ -333,7 +333,7 @@ class GroupActions(BaseModel):
     Configure actions like capture photo, video, collage and animations.
     """
 
-    model_config = ConfigDict(title="Actions configuration")
+    model_config = ConfigDict(title="Cấu hình hành động")
 
     image: list[SingleImageConfigurationSet] = Field(
         default=[
@@ -358,13 +358,13 @@ class GroupActions(BaseModel):
                     ],
                 ),
                 trigger=Trigger(
-                    ui_trigger=UiTrigger(title="Image", icon="photo_camera"),
+                    ui_trigger=UiTrigger(title="Ảnh đơn", icon="photo_camera"),
                     gpio_trigger=GpioTrigger(pin="27"),
                     keyboard_trigger=KeyboardTrigger(keycode="i"),
                 ),
             ),
         ],
-        description="Capture single images.",
+        description="Chụp ảnh đơn.",
     )
 
     collage: list[CollageConfigurationSet] = Field(
@@ -424,13 +424,13 @@ class GroupActions(BaseModel):
                     ],
                 ),
                 trigger=Trigger(
-                    ui_trigger=UiTrigger(title="Collage", icon="auto_awesome_mosaic"),
+                    ui_trigger=UiTrigger(title="Ảnh ghép", icon="auto_awesome_mosaic"),
                     gpio_trigger=GpioTrigger(pin="22"),
                     keyboard_trigger=KeyboardTrigger(keycode="c"),
                 ),
             )
         ],
-        description="Capture collages consist of one or more still images.",
+        description="Chụp ảnh ghép bao gồm một hoặc nhiều ảnh tĩnh.",
     )
 
     animation: list[AnimationConfigurationSet] = Field(
@@ -457,13 +457,13 @@ class GroupActions(BaseModel):
                     ],
                 ),
                 trigger=Trigger(
-                    ui_trigger=UiTrigger(title="Animation", icon="animated_images"),
+                    ui_trigger=UiTrigger(title="Ảnh động", icon="animated_images"),
                     gpio_trigger=GpioTrigger(pin="24"),
                     keyboard_trigger=KeyboardTrigger(keycode="g"),
                 ),
             ),
         ],
-        description="Capture an animation consisting of one or more still images. It's not a video but a low number of still images.",
+        description="Chụp ảnh động bao gồm một hoặc nhiều ảnh tĩnh. Không phải video mà là chuỗi ảnh tĩnh (GIF).",
     )
 
     video: list[VideoConfigurationSet] = Field(
@@ -477,13 +477,13 @@ class GroupActions(BaseModel):
                     video_framerate=15,
                 ),
                 trigger=Trigger(
-                    ui_trigger=UiTrigger(title="Boomerang", icon="movie"),
+                    ui_trigger=UiTrigger(title="Video lặp", icon="movie"),
                     gpio_trigger=GpioTrigger(pin="25"),
                     keyboard_trigger=KeyboardTrigger(keycode="v"),
                 ),
             ),
         ],
-        description="Capture videos from live streaming backend.",
+        description="Quay video từ backend livestream.",
     )
 
     multicamera: list[MulticameraConfigurationSet] = Field(
@@ -492,11 +492,11 @@ class GroupActions(BaseModel):
                 jobcontrol=MulticameraJobControl(),
                 processing=MulticameraProcessing(),
                 trigger=Trigger(
-                    ui_trigger=UiTrigger(title="Wigglegram", icon="3d"),
+                    ui_trigger=UiTrigger(title="Ảnh 3D", icon="3d"),
                     gpio_trigger=GpioTrigger(pin="12"),
                     keyboard_trigger=KeyboardTrigger(keycode="w"),
                 ),
             ),
         ],
-        description="Capture wigglegrams from a multicamera backend.",
+        description="Chụp ảnh đa góc (wigglegrams) từ hệ thống nhiều camera.",
     )

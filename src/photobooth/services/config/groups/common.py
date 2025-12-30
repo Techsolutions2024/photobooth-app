@@ -13,11 +13,11 @@ from ..serializer import contextual_serializer_password
 class GroupCommon(BaseModel):
     """Common config for photobooth."""
 
-    model_config = ConfigDict(title="Common Config")
+    model_config = ConfigDict(title="Cài đặt chung")
 
     admin_password: SecretStr = Field(
         default=SecretStr("0000"),
-        description="Password to access the admin dashboard.",
+        description="Mật khẩu truy cập trang quản trị.",
     )
 
     @field_serializer("admin_password")
@@ -26,10 +26,15 @@ class GroupCommon(BaseModel):
 
     logging_level: Literal["DEBUG", "INFO", "WARNING", "ERROR"] = Field(
         default="DEBUG",
-        description="Log verbosity. File is writte to disc, and latest log is displayed also in UI.",
+        description="Mức độ log. File được ghi vào đĩa, và log mới nhất cũng được hiển thị trên UI.",
+    )
+
+    ui_language: Literal["vi", "en", "de", "fr", "es"] = Field(
+        default="vi",
+        description="Ngôn ngữ giao diện người dùng. Mặc định là Tiếng Việt (vi). Các tùy chọn khác: Tiếng Anh (en), Tiếng Đức (de), Tiếng Pháp (fr), Tiếng Tây Ban Nha (es).",
     )
 
     users_delete_to_recycle_dir: bool = Field(
         default=True,
-        description="If enabled, the captured files are moved to the recycle directory instead permanently deleted. Accidentally deleted images can be restored by the admin manually. Please inform users about the fact that no capture is deleted, if you enable the function!",
+        description="Nếu bật, file chụp sẽ được chuyển vào thư mục thùng rác thay vì xóa vĩnh viễn. Ảnh đã xóa có thể được admin khôi phục thủ công. Vui lòng thông báo cho người dùng rằng không có ảnh nào bị xóa thực sự nếu bạn bật chức năng này!",
     )

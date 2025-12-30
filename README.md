@@ -1,52 +1,102 @@
-<h1 align="center"><img src="https://raw.githubusercontent.com/photobooth-app/photobooth-app/main/assets/logo/logo-text-blue-transparent.png" alt="photobooth app logo" /></h1>
+# Hệ Thống Photobooth Thương Mại (Phiên Bản Việt Hóa)
 
-Welcome to your brand-new open-source photobooth-app! Written in Python 🐍, coming along with a modern Vue3 frontend.
+Chào mừng bạn đến với hệ thống Photobooth chuyên nghiệp, được xây dựng trên nền tảng Python và Vue.js, đã được Việt hóa toàn diện để phục vụ thị trường Việt Nam.
 
-[![PyPI](https://img.shields.io/pypi/v/photobooth-app)](https://pypi.org/project/photobooth-app/)
-[![ruff](https://github.com/photobooth-app/photobooth-app/actions/workflows/ruff.yml/badge.svg)](https://github.com/photobooth-app/photobooth-app/actions/workflows/ruff.yml)
-[![pytest](https://github.com/photobooth-app/photobooth-app/actions/workflows/pytests.yml/badge.svg)](https://github.com/photobooth-app/photobooth-app/actions/workflows/pytests.yml)
-[![codecov](https://codecov.io/gh/photobooth-app/photobooth-app/branch/main/graph/badge.svg?token=SBB5DGX17V)](https://codecov.io/gh/photobooth-app/photobooth-app)
-[![crowdin](https://badges.crowdin.net/photobooth-app/localized.svg)](https://crowdin.com/project/photobooth-app)
+![Photobooth Banner](https://raw.githubusercontent.com/photobooth-app/photobooth-app/main/assets/logo/logo-text-blue-transparent.png)
 
-**[Installation](https://photobooth-app.org/setup/installation/)** - **[Documentation](https://photobooth-app.org/)** - **[PyPI package](https://pypi.org/project/photobooth-app/)** - **[3d printed box](https://photobooth-app.org/photobox3dprint/)**
+## 🚀 Tính Năng Nổi Bật
 
-## 😍 Features
+*   **Chụp ảnh đa dạng**: Hỗ trợ chụp ảnh đơn (Single), ảnh ghép (Collage), ảnh động (Animation/GIF), Video lặp (Boomerang) và ảnh 3D (Wigglegrams).
+*   **Hỗ trợ nhiều loại Camera**: Tương thích với Webcam (USB), DSLR (Canon/Nikon qua Gphoto2), và Raspberry Pi Camera.
+*   **Giao diện tiếng Việt**: Toàn bộ giao diện người dùng và trang cấu hình quản trị đã được dịch sang tiếng Việt, thân thiện và dễ sử dụng.
+*   **Hiệu ứng & Bộ lọc**: Tích hợp sẵn các bộ lọc màu (Instagram-like) và khả năng xóa phông nền bằng AI.
+*   **In ấn & Chia sẻ**: Hỗ trợ in ảnh trực tiếp và chia sẻ qua mã QR.
+*   **Điều khiển đèn LED**: Tích hợp điều khiển đèn WLED hoặc GPIO để tạo hiệu ứng ánh sáng.
 
-📷 Capture stills, animated gif, collages, 🪃 boomerangs and 3d wigglegrams!  
-🫶 Supports DSLR, Raspberry Pi cameras and webcameras  
-🎉 Live preview during countdown and on the home screen  
-🛫 Optimized for speed, highly response UI  
-🫶 Combine multiple cameras, dedicate one for high quality stills and another one for the livestream  
-💡 Integrates with WLED to signal countdown using LED rings  
-🤝 Linux, Raspberry Pi and Windows platforms supported  
-🔓 Open-source, non-restrictive MIT license  
+## 🛠️ Yêu Cầu Hệ Thống
 
-[![photobooth-app screenshot of the frontpage](https://raw.githubusercontent.com/photobooth-app/photobooth-app/main/assets/screenshots/frontpage.png)](https://photobooth-app.org/screenshots/)
+*   **Hệ điều hành**: Windows 10/11, Linux (Debian/Ubuntu), hoặc Raspberry Pi OS.
+*   **Python**: Phiên bản 3.11 trở lên.
+*   **Node.js**: (Chỉ cần nếu bạn muốn build lại frontend) v16+.
 
-[Find more screenshots in the documentation](https://photobooth-app.org/screenshots/)
+## ⚙️ Cài Đặt & Khởi Chạy
 
-## 🔧 Build your own
+### 1. Chuẩn bị môi trường
+```bash
+# Di chuyển vào thư mục dự án
+cd d:\photobooth-app
 
-Following resources are helpful to start building your own photobooth:
+# Tạo môi trường ảo (nếu chưa có)
+python -m venv .venv
 
-- [Requirements](https://photobooth-app.org/setup/installation/#prerequisites)
-- [Installation instructions](https://photobooth-app.org/setup/installation/)
-- [Camera specific setup](https://photobooth-app.org/setup/camera_setup/)
+# Kích hoạt môi trường ảo (Windows)
+.\.venv\Scripts\activate
+```
 
-You need inspiration first, have a look what others did:
+### 2. Cài đặt thư viện
+```bash
+pip install -e .
+```
 
-- [3d-printed reference photobooth-box](https://photobooth-app.org/photobox3dprint/)
-- [Example projects](https://photobooth-app.org/projects/)
-- [Find screenshots in the documentation](https://photobooth-app.org/screenshots)
+### 3. Khởi chạy hệ thống (Backend)
+```bash
+python -m photobooth
+```
+Server sẽ khởi động tại địa chỉ: `http://127.0.0.1:8000`
 
-### ©️ License
+### 4. Khởi chạy Frontend (Tùy chọn cho Dev)
+Nếu bạn đang phát triển giao diện:
+```bash
+cd photobooth-frontend
+npm install
+npm run dev
+```
 
-The software is licensed under the MIT license.
+## 📖 Hướng Dẫn Sử Dụng
 
-### 🎉 Donation
+### 1. Giao Diện Khách Hàng (Frontpage)
+Truy cập: `http://127.0.0.1:8000/`
+Đây là giao diện chính dành cho khách hàng sử dụng để chụp ảnh.
+*   **Màn hình chờ**: Hiển thị slideshow ảnh hoặc nút bắt đầu.
+*   **Chụp ảnh**: Khách hàng chọn chế độ chụp (Ảnh đơn, Ghép, Động...) và hệ thống sẽ đếm ngược.
+*   **Thư viện**: Xem lại ảnh vừa chụp, in hoặc quét mã QR để tải về.
 
-If you like my work and like to keep me motivated you can sponsor me:
+### 2. Giao Diện Quản Trị (Admin Dashboard)
+Truy cập: `http://127.0.0.1:8000/#/admin`
+*   **Đăng nhập**:
+    *   Mật khẩu mặc định: `0000`
+*   **Chức năng chính**:
+    *   **Cấu hình**: Điều chỉnh mọi thông số của hệ thống.
+    *   **Thư viện**: Quản lý tất cả ảnh/video đã chụp (xóa, in lại).
+    *   **Trạng thái**: Xem log hệ thống và trạng thái các dịch vụ.
 
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate/?hosted_button_id=8255Y566TBNEC)
+## 🔧 Hướng Dẫn Cấu Hình (Đã Việt Hóa)
 
-Or help [translate the software in your language](https://github.com/photobooth-app/photobooth-app/blob/main/CONTRIBUTING.md#help-translate-the-app).
+Trong trang quản trị (`/admin/config`), các tab cấu hình đã được dịch sang tiếng Việt:
+
+*   **Chung (Common)**:
+    *   Đổi mật khẩu admin.
+    *   Cài đặt ngôn ngữ giao diện (Chọn **Tiếng Việt**).
+    *   Quản lý thùng rác (ảnh xóa).
+*   **Camera**:
+    *   Chọn loại camera (Webcam, DSLR, Camera ảo).
+    *   Cấu hình độ phân giải, hướng xoay (ngang/dọc), ISO, tốc độ màn trập.
+*   **Hành động (Actions)**:
+    *   Cấu hình các quy trình chụp: Ảnh đơn, Ảnh ghép, Video.
+    *   Chỉnh thời gian đếm ngược.
+    *   Cài đặt bộ lọc màu và khung ảnh (Frame) mặc định.
+*   **Giao diện người dùng (UI Settings)**:
+    *   Chỉnh màu sắc chủ đạo, hình nền.
+    *   Thay đổi văn bản hiển thị trên màn hình chào ("Xin chào! Hãy chụp vài bức ảnh nào!").
+*   **Phần cứng (Hardware)**:
+    *   Cấu hình in ấn (chọn máy in, số lượng bản in).
+    *   Cấu hình đèn LED và các nút bấm vật lý (GPIO).
+
+## 🆘 Khắc Phục Sự Cố
+
+*   **Không vào được trang quản trị**: Kiểm tra xem server backend có đang chạy không (cửa sổ terminal/cmd). Đảm bảo port 8000 không bị chặn.
+*   **Camera không hiển thị**: Đảm bảo camera đã kết nối USB. Vào tab **Camera** trong admin để kiểm tra xem thiết bị có được nhận diện không.
+*   **Lỗi in ấn**: Kiểm tra kết nối máy in và driver. Đảm bảo máy in được chọn đúng trong tab **Phần cứng**.
+
+---
+*Hệ thống được phát triển và tùy biến lại cho thị trường Việt Nam. © 2025*

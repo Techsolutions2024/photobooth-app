@@ -11,37 +11,37 @@ class GroupHardwareInputOutput(BaseModel):
     Configure hardware GPIO, keyboard and more. Find integration information in the documentation.
     """
 
-    model_config = ConfigDict(title="Hardware Input/Output Config")
+    model_config = ConfigDict(title="Phần cứng (GPIO/Printer)")
 
     # keyboard config
     keyboard_input_enabled: bool = Field(
         default=False,
-        description="Enable keyboard input globally. Keyup is catched in browsers connected to the app.",
+        description="Bật nhập liệu bàn phím toàn cục. Phím bấm được bắt trên trình duyệt kết nối tới ứng dụng.",
     )
 
     # GpioService Config
     gpio_enabled: bool = Field(
         default=False,
-        description="Enable Raspberry Pi GPIOzero integration.",
+        description="Bật tích hợp Raspberry Pi GPIOzero.",
     )
     gpio_pin_shutdown: int = Field(
         default=17,
-        description="GPIO pin to shutdown after holding it for 2 seconds.",
+        description="Chân GPIO để tắt máy sau khi giữ 2 giây.",
     )
     gpio_pin_reboot: int = Field(
         default=18,
-        description="GPIO pin to reboot after holding it for 2 seconds.",
+        description="Chân GPIO để khởi động lại sau khi giữ 2 giây.",
     )
 
     gpio_pin_job_next: int = Field(
         default=27,
-        description="If a job is active, this pin is used to confirm/continue the job process if manual input is required for example to approve.",
+        description="Nếu job đang chạy, chân này dùng để xác nhận/tiếp tục quy trình nếu cần nhập thủ công (vd để duyệt ảnh).",
     )
     gpio_pin_job_reject: int = Field(
         default=22,
-        description="If a job is active, this pin is used to reject a capture during approval.",
+        description="Nếu job đang chạy, chân này dùng để từ chối ảnh khi duyệt.",
     )
     gpio_pin_job_abort: int = Field(
         default=20,
-        description="If a job is active, this pin is used to abort the job.",
+        description="Nếu job đang chạy, chân này dùng để hủy job.",
     )

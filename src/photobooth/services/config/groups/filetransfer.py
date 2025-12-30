@@ -9,15 +9,15 @@ from pydantic import BaseModel, ConfigDict, Field
 class GroupFileTransfer(BaseModel):
     """Configuration for USB File Transfer Service."""
 
-    model_config = ConfigDict(title="USB File Transfer Service Config (deprecated since v8)")
+    model_config = ConfigDict(title="Cấu hình chuyển file USB (đã cũ)")
 
     enabled: bool = Field(
         default=False,
-        description="(DEPRECATED in v8) Enable the automatic file transfer to USB service. Files are copied when the USB drive is inserted.",
+        description="(ĐÃ CŨ trong v8) Bật dịch vụ tự động chuyển file sang USB. File sẽ được copy khi cắm USB.",
         # json_schema_extra={"deprecated": "v8"},
     )
     target_folder_name: str = Field(
         default="photobooth",
-        description="(DEPRECATED in v8) Name of the top-level folder on the USB drive where files will be copied to.",
+        description="(ĐÃ CŨ trong v8) Tên thư mục gốc trên USB nơi file sẽ được copy vào.",
         # json_schema_extra={"deprecated": "v8"},
     )

@@ -40,6 +40,22 @@ def test_init_error_if_demoassets_is_no_symlink():
 
 
 def test_init_userdata_after_init_there_is_demoassets_symlink():
+    def is_junction(path: Path) -> bool:
+        """Check if path is a junction on Windows (compatible with Python 3.11)"""
+        if os.name != "nt":
+            return False
+        # For Python 3.12+, use the built-in method
+        if hasattr(path, "is_junction"):
+            return path.is_junction()
+        # For Python 3.11, check using file attributes
+        import stat
+
+        try:
+            return path.exists() and bool(path.lstat().st_file_attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT)
+        except (OSError, AttributeError):
+            # Fallback: use os.path.islink
+            return os.path.islink(path)
+
     target = Path(USERDATA_PATH, "demoassets")
     target.unlink(missing_ok=True)
 
@@ -47,6 +63,6 @@ def test_init_userdata_after_init_there_is_demoassets_symlink():
     __import__("photobooth.__init__")
 
     if os.name == "nt":
-        assert target.is_junction()
+        assert is_junction(target)
     else:
         assert target.is_symlink()

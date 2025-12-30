@@ -55,12 +55,28 @@ def _copy_demo_assets_to_userdata():
         else:
             os.symlink(src_path, dst_path, target_is_directory=True)
 
+    def is_junction(path: Path) -> bool:
+        """Check if path is a junction on Windows (compatible with Python 3.11)"""
+        if os.name != "nt":
+            return False
+        # For Python 3.12+, use the built-in method
+        if hasattr(path, "is_junction"):
+            return path.is_junction()
+        # For Python 3.11, check using os.path.islink which works for junctions on Windows
+        import stat
+
+        try:
+            return path.exists() and bool(path.lstat().st_file_attributes & stat.FILE_ATTRIBUTE_REPARSE_POINT)
+        except (OSError, AttributeError):
+            # Fallback: use os.path.islink
+            return os.path.islink(path)
+
     src_path = Path(__file__).parent.resolve().joinpath("demoassets/userdata").absolute()
     dst_path = Path(USERDATA_PATH, "demoassets").absolute()
 
     if not dst_path.exists():
         create_link(src_path, dst_path)
-    elif dst_path.is_symlink() or (os.name == "nt" and dst_path.is_junction()):
+    elif dst_path.is_symlink() or (os.name == "nt" and is_junction(dst_path)):
         return
     else:
         raise RuntimeError(f"error setup demoassets, {dst_path} exists but is no symlink!")

@@ -15,25 +15,25 @@ ParameterUiType = Literal["input", "int"]
 class ShareProcessingParameters(BaseModel):
     """Configure additional parameter for the share command to input by the user."""
 
-    model_config = ConfigDict(title="Additional parameters")
+    model_config = ConfigDict(title="Tham số bổ sung")
 
     key: str = Field(
         default="copies",
         min_length=4,
         pattern=r"^[a-zA-Z0-9]+$",
-        description="Define the parameter key that is replaced in the command. Example: Set to 'copies' to replace {copies} in the command by the value.",
+        description="Định nghĩa khóa tham số sẽ được thay thế trong lệnh. Ví dụ: Nếu đặt là 'copies', {copies} trong lệnh sẽ được thay thế bằng giá trị thực tế.",
     )
     label: str = Field(
         default="Copies",
-        description="Label the field, displayed to the user.",
+        description="Nhãn hiển thị cho người dùng.",
     )
     ui_type: ParameterUiType = Field(
         default="int",
-        description="Display type of the parameter in the UI. 'int' displays ➕➖ buttons in the UI. 'input' displays an input box. This affects only the UI, all parameter are interpreted as strings.",
+        description="Loại hiển thị của tham số trên giao diện. 'int' hiện nút tăng giảm ➕➖. 'input' hiện ô nhập liệu. Chỉ ảnh hưởng hiển thị, mọi tham số đều là chuỗi.",
     )
     default: str = Field(
         default="1",
-        description="Default value if the user does not change it.",
+        description="Giá trị mặc định nếu người dùng không thay đổi.",
     )
     valid_min: str = Field(default="1")
     valid_max: str = Field(default="3")
@@ -42,59 +42,59 @@ class ShareProcessingParameters(BaseModel):
 class ShareProcessing(BaseModel):
     """Configure options to share or print images."""
 
-    model_config = ConfigDict(title="Share/Print Actions")
+    model_config = ConfigDict(title="Hành động Chia sẻ/In")
 
     share_command: str = Field(
         default="echo {filename}",
-        description="Command issued to share/print. Use {filename} as placeholder for the mediaitem to be shared/printed. Also available: {media_type}=[image,collage,video,animation] and {action_config_name} which is the action name defined in the config.",
+        description="Lệnh thực thi để chia sẻ/in. Dùng {filename} thay cho file cần xử lý. Cũng hỗ trợ: {media_type}=[image,collage,video,animation] và {action_config_name} là tên hành động định nghĩa trong config.",
     )
     ask_user_for_parameter_input: bool = Field(
         default=False,
-        description="If enabled, when the share button is activated, a dialog pops up to input below configured parameters.",
+        description="Nếu bật, khi nút chia sẻ được kích hoạt, một hộp thoại sẽ hiện ra để nhập các tham số cấu hình bên dưới.",
     )
     parameters_dialog_caption: str = Field(
         default="Make your choice!",
-        description="Caption of the dialog popup displaying the parameters.",
+        description="Tiêu đề hộp thoại hiển thị các tham số.",
     )
     parameters_dialog_action_icon: str = Field(
         default="print",
-        description="Icon used for the action button (any icon from material icons, see documentation).",
+        description="Icon cho nút hành động (bất kỳ icon nào từ material icons, xem tài liệu).",
     )
     parameters_dialog_action_label: str = Field(
         default="GO",
-        description="Text used for the action button as label.",
+        description="Văn bản làm nhãn cho nút hành động.",
     )
 
     parameters: list[ShareProcessingParameters] = Field(
         default=[],
-        description="Define input fields the user needs to enter on share.",
+        description="Định nghĩa các trường nhập liệu người dùng cần điền khi chia sẻ.",
     )
 
     share_blocked_time: int = Field(
         # default=10,
-        description="Block queue print until time is passed. Time in seconds.",
+        description="Chặn hàng đợi in cho đến khi hết thời gian (giây).",
     )
 
     max_shares: int = Field(
         default=0,
         ge=0,
-        description="Limit max shares (0 = no limit).",
+        description="Giới hạn số lần chia sẻ tối đa (0 = không giới hạn).",
     )
 
 
 class ShareConfigurationSet(BaseModel):
     """Configure stages how to process mediaitem before printing on paper."""
 
-    model_config = ConfigDict(title="Process mediaitem before printing on paper")
+    model_config = ConfigDict(title="Cấu hình xử lý trước khi in")
 
     name: str = Field(
         default="default print settings",
-        description="Name to identify, only used for display in admin center.",
+        description="Tên định danh, chỉ dùng hiển thị trong trang quản trị.",
     )
 
     handles_images_only: bool = Field(
         default=True,
-        description="Enable if this share type can handle only still images.",
+        description="Bật nếu kiểu chia sẻ này chỉ xử lý ảnh tĩnh.",
     )
 
     processing: ShareProcessing
@@ -104,11 +104,11 @@ class ShareConfigurationSet(BaseModel):
 class GroupShare(BaseModel):
     """Configure share or print actions."""
 
-    model_config = ConfigDict(title="Define Share and Print Actions")
+    model_config = ConfigDict(title="Chia sẻ / In ấn")
 
     sharing_enabled: bool = Field(
         default=True,
-        description="Enable sharing service in general.",
+        description="Bật dịch vụ chia sẻ nói chung.",
     )
 
     actions: list[ShareConfigurationSet] = Field(
@@ -123,7 +123,7 @@ class GroupShare(BaseModel):
                     parameters=[ShareProcessingParameters()],
                 ),
                 trigger=Trigger(
-                    ui_trigger=UiTrigger(show_button=True, title="Direct Print", icon="print"),
+                    ui_trigger=UiTrigger(show_button=True, title="In ngay", icon="print"),
                     gpio_trigger=GpioTrigger(pin="23", trigger_on="pressed"),
                     keyboard_trigger=KeyboardTrigger(keycode="p"),
                 ),
@@ -139,7 +139,7 @@ class GroupShare(BaseModel):
                     parameters=[ShareProcessingParameters()],
                 ),
                 trigger=Trigger(
-                    ui_trigger=UiTrigger(show_button=True, title="Print Copies", icon="print"),
+                    ui_trigger=UiTrigger(show_button=True, title="In nhiều bản", icon="print"),
                     gpio_trigger=GpioTrigger(pin="", trigger_on="pressed"),
                     keyboard_trigger=KeyboardTrigger(keycode=""),
                 ),
@@ -166,11 +166,11 @@ class GroupShare(BaseModel):
                     ],
                 ),
                 trigger=Trigger(
-                    ui_trigger=UiTrigger(show_button=True, title="Send Mail", icon="mail"),
+                    ui_trigger=UiTrigger(show_button=True, title="Gửi Mail", icon="mail"),
                     gpio_trigger=GpioTrigger(pin="", trigger_on="pressed"),
                     keyboard_trigger=KeyboardTrigger(keycode=""),
                 ),
             ),
         ],
-        description="Share or print mediaitems.",
+        description="Chia sẻ hoặc in các mục media.",
     )
